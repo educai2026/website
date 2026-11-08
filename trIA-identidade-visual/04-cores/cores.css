@@ -1,0 +1,20 @@
+/* trIA — variáveis de cor e tipografia */
+:root {
+  --tria-marinho: #13254A;  /* Azul-marinho trIA */
+  --tria-vermelho: #C8102E;  /* Vermelho Alagoas */
+  --tria-azul: #1D4E9E;  /* Azul Alagoas */
+  --tria-branco: #FFFFFF;  /* Branco */
+  --tria-papel: #FBFAF7;  /* Branco-papel */
+  --tria-texto-2: #55606A;  /* Cinza texto */
+  --tria-linha: #D9DCE3;  /* Cinza linha */
+  --tria-nevoa: #EDF0F5;  /* Névoa */
+  --tria-verificado: #1F7A4D;  /* Verificado */
+  --tria-pendente: #8A5A00;  /* Pendente */
+  --tria-fonte: #1D4E9E;  /* Fonte citada */
+  --tria-fonte-marca: 'Archivo', system-ui, sans-serif;
+  --tria-fonte-texto: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --tria-fonte-questao: 'Source Serif 4', Georgia, serif;
+}
+
+/* Google Fonts: */
+/* @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:wght@400;600&display=swap'); */
