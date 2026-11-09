@@ -26,6 +26,14 @@ const passos = [
   { n: '3', t: 'Você decide', d: 'Ajuste o enunciado, troque alternativas, monte o simulado e assine. O material é seu.' },
 ];
 
+const duvidas = [
+  { q: 'A trIA monta a prova no meu lugar?', r: 'Não. Você escolhe a habilidade, revisa cada questão e decide o que entra. A trIA sugere e mostra de onde tirou; o material final é seu.' },
+  { q: 'Como sei se uma questão está correta?', r: 'Cada questão traz gabarito, resolução e fonte à vista, com um estado: verificado, pendente ou fonte citada. O que ainda não foi checado aparece como pendente, e a revisão final é sempre sua.' },
+  { q: 'Quais áreas a trIA cobre?', r: 'Começamos por Matemática e Ciências da Natureza, no padrão do ENEM.' },
+  { q: 'Já posso usar?', r: 'Ainda não. A trIA está em desenvolvimento. Quem entra na lista de espera é avisado quando houver novidades.' },
+  { q: 'A trIA tem ligação com o INEP?', r: 'Não. O ENEM é um exame do INEP. A trIA segue o padrão das questões do exame, mas não é afiliada ao INEP.' },
+];
+
 const compromissos = [
   { t: 'Autonomia', d: 'O professor conduz as escolhas pedagógicas. A trIA é uma assinatura discreta; o protagonista é o seu material.' },
   { t: 'Rigor', d: 'Conteúdo, gabaritos e resoluções precisam de evidências e verificações, e isso fica visível.' },
@@ -44,6 +52,7 @@ const compromissos = [
         <a class="topo-link so-desk" href="#exemplo">Exemplo</a>
         <a class="topo-link so-desk" href="#como">Como funciona</a>
         <a class="topo-link so-desk" href="#nome">O nome</a>
+        <a class="topo-link so-desk" href="#duvidas">Dúvidas</a>
         <a class="topo-link" href="#lista">Lista de espera</a>
       </nav>
     </div>
@@ -62,7 +71,9 @@ const compromissos = [
             compreender, verificar, adaptar e assumir como suas.
           </p>
           <div class="acoes">
-            <a class="btn btn-claro" href="#lista">Quero ser avisado</a>
+            {FORM_URL
+              ? <a class="btn btn-claro" href={FORM_URL} target="_blank" rel="noopener">Quero ser avisado<span class="sr"> (abre o formulário em nova aba)</span></a>
+              : <a class="btn btn-claro" href="#lista">Quero ser avisado</a>}
             <a class="btn btn-contorno" href="#exemplo">Ver gabarito e resolução</a>
           </div>
         </div>
@@ -146,6 +157,12 @@ const compromissos = [
             </li>
           ))}
         </ol>
+        {FORM_URL && (
+          <p class="convite">
+            <span>Quer testar quando abrir?</span>
+            <a class="btn btn-primario" href={FORM_URL} target="_blank" rel="noopener">Entrar na lista de espera<span class="sr"> (abre o formulário em nova aba)</span></a>
+          </p>
+        )}
       </div>
     </section>
 
@@ -201,7 +218,24 @@ const compromissos = [
       </div>
     </section>
 
-    <!-- 7. Lista de espera -->
+    <!-- 7. Dúvidas -->
+    <section class="sec sec-nevoa" id="duvidas" aria-labelledby="t-duvidas">
+      <div class="wrap">
+        <span class="linha-azul"></span>
+        <p class="eyebrow">Dúvidas comuns</p>
+        <h2 id="t-duvidas">Perguntas diretas, respostas diretas</h2>
+        <div class="faq">
+          {duvidas.map((d) => (
+            <details>
+              <summary>{d.q}</summary>
+              <p>{d.r}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Lista de espera -->
     <section class="lista on-dark" id="lista" aria-labelledby="t-lista">
       <div class="wrap lista-in">
         <span class="linha-azul"></span>
@@ -230,8 +264,9 @@ const compromissos = [
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   /* topo */
-  .topo { background: var(--tria-marinho); }
-  .topo-in { display: flex; align-items: center; justify-content: space-between; padding-block: 18px; }
+  .topo { background: var(--tria-marinho); position: sticky; top: 0; z-index: 5; }
+  .topo-in { display: flex; align-items: center; justify-content: space-between; padding-block: 12px; }
+  .topo img { width: 88px; height: auto; }
   .topo-link { color: #fff; font-weight: 700; text-decoration: none; border-bottom: 2px solid transparent; }
   .topo-link:hover { border-color: #fff; }
 
@@ -292,6 +327,13 @@ const compromissos = [
   .cards { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
   .cards li { background: var(--tria-nevoa); padding: 24px; border-top: 4px solid var(--tria-azul); }
   .cards h3 { margin-bottom: 8px; }
+
+  /* convite e dúvidas */
+  .convite { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; font-weight: 700; font-size: 1.1875rem; }
+  .faq { margin-top: 32px; max-width: 760px; border-top: 1px solid var(--tria-linha); }
+  .faq details { border-bottom: 1px solid var(--tria-linha); background: transparent; }
+  .faq summary { cursor: pointer; font-weight: 700; font-size: 1.125rem; padding: 18px 0; }
+  .faq details p { padding: 0 0 20px; max-width: 640px; }
 
   /* lista de espera */
   .lista { background: var(--tria-marinho); color: #fff; padding-block: clamp(56px, 9vw, 96px); }
