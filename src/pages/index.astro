@@ -62,7 +62,7 @@ const compromissos = [
             compreender, verificar, adaptar e assumir como suas.
           </p>
           <div class="acoes">
-            <a class="btn btn-claro" href={FORM_URL || '#lista'} rel="noopener">Quero ser avisado</a>
+            <a class="btn btn-claro" href="#lista">Quero ser avisado</a>
             <a class="btn btn-contorno" href="#exemplo">Ver gabarito e resolução</a>
           </div>
         </div>
@@ -211,7 +211,7 @@ const compromissos = [
           você para testar com a gente.
         </p>
         {FORM_URL
-          ? <a class="btn btn-claro" href={FORM_URL} rel="noopener">Entrar na lista de espera</a>
+          ? <a class="btn btn-claro" href={FORM_URL} target="_blank" rel="noopener">Entrar na lista de espera<span class="sr"> (abre o formulário em nova aba)</span></a>
           : <span class="btn btn-claro" role="link" aria-disabled="true">Formulário em preparação</span>}
       </div>
     </section>
