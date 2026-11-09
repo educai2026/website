@@ -1,0 +1,350 @@
+---
+import Base from '../layouts/Base.astro';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+import { FORM_URL } from '../config';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const img = (f: string) => `${base}/brand/${f}`;
+const ano = new Date().getFullYear();
+
+const tex = (s: string) => katex.renderToString(s, { throwOnError: true, output: 'html' });
+const formula = tex('A = \\pi r^{2}');
+const conta = tex('A = 3 \\cdot 4^{2} = 3 \\cdot 16 = 48\\ \\text{m}^{2}');
+
+const alternativas = [
+  { l: 'A', t: '24 m²', nota: 'Esse valor vem de 2πr, que é o comprimento da borda, não a área.' },
+  { l: 'B', t: '32 m²', nota: 'Esse valor vem de 2r², que não corresponde à área do círculo.' },
+  { l: 'C', t: '48 m²', nota: 'Correta: 3 · 4² = 48.' },
+  { l: 'D', t: '96 m²', nota: 'Esse valor vem de multiplicar por 2 o resultado correto.' },
+  { l: 'E', t: '192 m²', nota: 'Esse valor vem de usar o diâmetro no lugar do raio: 3 · 8² = 192.' },
+];
+
+const passos = [
+  { n: '1', t: 'Você define', d: 'Escolha a habilidade, o assunto e o nível de dificuldade. A trIA sugere questões a partir do que você pediu.' },
+  { n: '2', t: 'Você revisa', d: 'Cada questão traz gabarito, resolução e fonte à vista. O que ainda não foi verificado aparece marcado como pendente.' },
+  { n: '3', t: 'Você decide', d: 'Ajuste o enunciado, troque alternativas, monte o simulado e assine. O material é seu.' },
+];
+
+const duvidas = [
+  { q: 'A trIA monta a prova no meu lugar?', r: 'Não. Você escolhe a habilidade, revisa cada questão e decide o que entra. A trIA sugere e mostra de onde tirou; o material final é seu.' },
+  { q: 'Como sei se uma questão está correta?', r: 'Cada questão traz gabarito, resolução e fonte à vista, com um estado: verificado, pendente ou fonte citada. O que ainda não foi checado aparece como pendente, e a revisão final é sempre sua.' },
+  { q: 'Quais áreas a trIA cobre?', r: 'Começamos por Matemática e Ciências da Natureza, no padrão do ENEM.' },
+  { q: 'Já posso usar?', r: 'Ainda não. A trIA está em desenvolvimento. Quem entra na lista de espera é avisado quando houver novidades.' },
+  { q: 'A trIA tem ligação com o INEP?', r: 'Não. O ENEM é um exame do INEP. A trIA segue o padrão das questões do exame, mas não é afiliada ao INEP.' },
+];
+
+const compromissos = [
+  { t: 'Autonomia', d: 'O professor conduz as escolhas pedagógicas. A trIA é uma assinatura discreta; o protagonista é o seu material.' },
+  { t: 'Rigor', d: 'Conteúdo, gabaritos e resoluções precisam de evidências e verificações, e isso fica visível.' },
+  { t: 'Transparência', d: 'Fontes, limitações e pendências aparecem na tela. Quando algo não foi verificado, dizemos.' },
+  { t: 'Acesso', d: 'Ampliar a capacidade de produzir material próprio de qualidade, com leitura fácil e versão para xerox.' },
+];
+---
+
+<Base>
+  <header class="topo on-dark">
+    <div class="wrap topo-in">
+      <a href={`${base}/`} aria-label="trIA, página inicial">
+        <img src={img('trIA-principal-negativo.svg')} alt="trIA" width="112" height="54" />
+      </a>
+      <nav class="topo-nav" aria-label="Seções">
+        <a class="topo-link so-desk" href="#exemplo">Exemplo</a>
+        <a class="topo-link so-desk" href="#como">Como funciona</a>
+        <a class="topo-link so-desk" href="#nome">O nome</a>
+        <a class="topo-link so-desk" href="#duvidas">Dúvidas</a>
+        <a class="topo-link" href="#lista">Lista de espera</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- 1. Abertura -->
+    <section class="hero on-dark">
+      <div class="wrap hero-grid">
+        <div class="hero-txt">
+          <span class="linha-azul"></span>
+          <p class="chip">Em desenvolvimento · começando por Matemática e Ciências da Natureza</p>
+          <h1>Questões e simulados no padrão ENEM, criados com o <span class="bloco">professor</span>.</h1>
+          <p class="hero-sub">
+            A trIA ajuda você a transformar objetivos de aprendizagem em questões que você consegue
+            compreender, verificar, adaptar e assumir como suas.
+          </p>
+          <div class="acoes">
+            {FORM_URL
+              ? <a class="btn btn-claro" href={FORM_URL} target="_blank" rel="noopener">Quero ser avisado<span class="sr"> (abre o formulário em nova aba)</span></a>
+              : <a class="btn btn-claro" href="#lista">Quero ser avisado</a>}
+            <a class="btn btn-contorno" href="#exemplo">Ver gabarito e resolução</a>
+          </div>
+        </div>
+
+        <article class="questao" aria-label="Questão de exemplo">
+          <p class="meta">Matemática · Geometria plana · Padrão ENEM · H8</p>
+          <p class="enunciado">
+            Uma escola vai revestir com piso emborrachado um pátio circular de 4 m de raio. Adote{' '}
+            <span set:html={tex('\\pi = 3')} />{' '}e lembre que a área do círculo é{' '}
+            <span set:html={formula} />. Quantos metros quadrados de piso serão necessários?
+          </p>
+          <ol class="alts">
+            {alternativas.map((a) => (
+              <li><span class="bola" aria-hidden="true">{a.l}</span><span class="sr">Alternativa {a.l}: </span>{a.t}</li>
+            ))}
+          </ol>
+          <p class="q-rodape">Exemplo ilustrativo, feito para mostrar o formato.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 2. Base à vista -->
+    <section class="sec" id="exemplo" aria-labelledby="t-exemplo">
+      <div class="wrap">
+        <span class="linha-azul"></span>
+        <p class="eyebrow">Como a trIA mostra o material</p>
+        <h2 id="t-exemplo">Cada questão vem com a sua base à vista</h2>
+        <p class="lead">
+          Gabarito, resolução e fonte ficam ao lado do enunciado, para você conferir antes de usar.
+          Cada item traz um estado, sempre com ícone e texto.
+        </p>
+
+        <div class="base-grid">
+          <ul class="estados">
+            <li>
+              <span class="selo selo-ok"><span aria-hidden="true">✓</span> Verificado</span>
+              <p>Conteúdo checado: gabarito, fonte ou cálculo.</p>
+            </li>
+            <li>
+              <span class="selo selo-pend"><span aria-hidden="true">!</span> Pendente</span>
+              <p>Precisa da sua revisão antes de entrar na prova.</p>
+            </li>
+            <li>
+              <span class="selo selo-fonte"><span aria-hidden="true">§</span> Fonte citada</span>
+              <p>Referência ou evidência vinculada à questão.</p>
+            </li>
+          </ul>
+
+          <article class="resolucao" aria-label="Gabarito e resolução da questão de exemplo">
+            <p class="meta">Resolução da questão de exemplo</p>
+            <div class="res-corpo">
+              <p><strong>Gabarito: C.</strong> Substituindo o raio na fórmula da área:</p>
+              <p class="conta" set:html={conta} />
+              <p class="res-sub">Por que as outras não servem</p>
+              <ul class="porques">
+                {alternativas.filter((a) => a.l !== 'C').map((a) => (
+                  <li><strong>{a.l}.</strong> {a.nota}</li>
+                ))}
+              </ul>
+            </div>
+            <ul class="selos" aria-label="Estado deste material">
+              <li class="selo selo-pend"><span aria-hidden="true">!</span> Revisão do professor pendente</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Como funciona -->
+    <section class="sec sec-nevoa" id="como" aria-labelledby="t-como">
+      <div class="wrap">
+        <span class="linha-azul"></span>
+        <p class="eyebrow">Como funciona</p>
+        <h2 id="t-como">Três passos, e o professor conduz todos</h2>
+        <ol class="passos">
+          {passos.map((p) => (
+            <li>
+              <span class="passo-n" aria-hidden="true">{p.n}</span>
+              <h3>{p.t}</h3>
+              <p>{p.d}</p>
+            </li>
+          ))}
+        </ol>
+        {FORM_URL && (
+          <p class="convite">
+            <span>Quer testar quando abrir?</span>
+            <a class="btn btn-primario" href={FORM_URL} target="_blank" rel="noopener">Entrar na lista de espera<span class="sr"> (abre o formulário em nova aba)</span></a>
+          </p>
+        )}
+      </div>
+    </section>
+
+    <!-- 4. Compromissos -->
+    <section class="sec" id="compromissos" aria-labelledby="t-comp">
+      <div class="wrap">
+        <span class="linha-azul"></span>
+        <p class="eyebrow">Quatro compromissos</p>
+        <h2 id="t-comp">Clareza para ensinar, evidência para confiar</h2>
+        <ul class="cards">
+          {compromissos.map((c) => (
+            <li><h3>{c.t}</h3><p>{c.d}</p></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. O nome -->
+    <section class="sec sec-nevoa" id="nome" aria-labelledby="t-nome">
+      <div class="wrap duas">
+        <div>
+          <span class="linha-azul"></span>
+          <p class="eyebrow">O nome</p>
+          <h2 id="t-nome">Um “I” que pertence às duas palavras</h2>
+          <p class="lead">
+            <strong>trIA</strong> junta <strong>TRI</strong>, a Teoria de Resposta ao Item, método de nota do ENEM,
+            e <strong>IA</strong>, a inteligência artificial. O “I” fecha uma e abre a outra: é o ponto de encontro
+            entre o método e a tecnologia.
+          </p>
+          <p class="lead">
+            E também lembra <em>triar</em>: selecionar, filtrar, escolher o que entra na prova. É exatamente o que o
+            professor faz ao montar um simulado.
+          </p>
+        </div>
+        <img class="logo-rot" src={img('trIA-conceitual-com-rotulos.svg')} alt="Logo trIA com os rótulos: TRI, Teoria de Resposta ao Item, e IA, Inteligência Artificial" width="520" height="276" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- 6. Xerox -->
+    <section class="sec" id="xerox" aria-labelledby="t-xerox">
+      <div class="wrap duas">
+        <img class="a4" src={img('cabecalho-simulado-A4.png')} alt="Modelo de simulado em A4, em preto e branco, com cabeçalho, campos de nome, turma e data, e questões em duas colunas" width="420" height="594" loading="lazy" />
+        <div>
+          <span class="linha-azul"></span>
+          <p class="eyebrow">Pronto para a sala de aula</p>
+          <h2 id="t-xerox">Simulado que sai bem na copiadora</h2>
+          <p class="lead">
+            O modelo de simulado da trIA é só preto, com fonte de leitura e diagramação de prova. Pensado para
+            xerox comum, porque o material precisa funcionar na escola real.
+          </p>
+          <p class="lead">No rodapé, uma assinatura simples: <em>Material criado pelo professor com apoio da trIA.</em></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Dúvidas -->
+    <section class="sec sec-nevoa" id="duvidas" aria-labelledby="t-duvidas">
+      <div class="wrap">
+        <span class="linha-azul"></span>
+        <p class="eyebrow">Dúvidas comuns</p>
+        <h2 id="t-duvidas">Perguntas diretas, respostas diretas</h2>
+        <div class="faq">
+          {duvidas.map((d) => (
+            <details>
+              <summary>{d.q}</summary>
+              <p>{d.r}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Lista de espera -->
+    <section class="lista on-dark" id="lista" aria-labelledby="t-lista">
+      <div class="wrap lista-in">
+        <span class="linha-azul"></span>
+        <h2 id="t-lista">Quer ser avisado quando a trIA abrir?</h2>
+        <p class="lead">
+          Deixe seu contato na lista de espera. Avisamos quando houver novidades e, se quiser, convidamos
+          você para testar com a gente.
+        </p>
+        {FORM_URL
+          ? <a class="btn btn-claro" href={FORM_URL} target="_blank" rel="noopener">Entrar na lista de espera<span class="sr"> (abre o formulário em nova aba)</span></a>
+          : <span class="btn btn-claro" role="link" aria-disabled="true">Formulário em preparação</span>}
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="wrap rodape-in">
+      <img src={img('trIA-principal-positivo.svg')} alt="trIA" width="96" height="46" />
+      <p class="frase">Inteligência para criar. Clareza para ensinar. Autonomia para transformar.</p>
+      <p class="mini">Material criado pelo professor com apoio da trIA. © {ano} trIA. ENEM é marca do INEP; a trIA não é afiliada ao INEP.</p>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* topo */
+  .topo { background: var(--tria-marinho); position: sticky; top: 0; z-index: 5; }
+  .topo-in { display: flex; align-items: center; justify-content: space-between; padding-block: 12px; }
+  .topo img { width: 88px; height: auto; }
+  .topo-link { color: #fff; font-weight: 700; text-decoration: none; border-bottom: 2px solid transparent; }
+  .topo-link:hover { border-color: #fff; }
+
+  /* abertura */
+  .topo-nav { display: flex; gap: 28px; }
+  .so-desk { display: none; }
+  @media (min-width: 820px) { .so-desk { display: inline; } }
+  .hero { background: var(--tria-marinho); color: #fff; padding-block: clamp(40px, 7vw, 80px) clamp(56px, 9vw, 104px); }
+  .hero-grid { display: grid; gap: clamp(36px, 5vw, 56px); align-items: center; grid-template-columns: 1fr; }
+  @media (min-width: 980px) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
+  .chip { display: inline-block; font-size: 0.9375rem; color: #DCE3F1; border: 1px solid rgba(255,255,255,.35); padding: 4px 12px; margin-bottom: 24px; }
+  .hero h1 { margin-bottom: 24px; }
+  .hero-sub { font-size: 1.25rem; color: #E6EBF5; max-width: 600px; margin-bottom: 36px; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  /* seções */
+  .sec { padding-block: clamp(56px, 9vw, 96px); }
+  .sec-nevoa { background: var(--tria-nevoa); }
+  .sec h2 { margin: 6px 0 16px; max-width: 760px; }
+  .lead { font-size: 1.1875rem; max-width: 640px; }
+  .lead + .lead { margin-top: 14px; }
+  .duas { display: grid; gap: clamp(28px, 6vw, 64px); align-items: center; grid-template-columns: 1fr; }
+  @media (min-width: 820px) { .duas { grid-template-columns: 1fr 1fr; } }
+  .logo-rot { width: 100%; max-width: 520px; justify-self: center; }
+  .a4 { width: 100%; max-width: 380px; justify-self: center; border: 1px solid var(--tria-linha); background: #fff; }
+
+  /* questão */
+  .questao { background: #fff; color: var(--tria-marinho); border-top: 4px solid var(--tria-azul); padding: clamp(20px, 3vw, 32px); }
+  .meta { font-size: 0.875rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--tria-texto-2); margin-bottom: 16px; }
+  .enunciado { font-family: var(--f-questao); font-size: 1.125rem; line-height: 1.6; margin-bottom: 20px; }
+  .alts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-family: var(--f-questao); font-size: 1.125rem; }
+  .alts li { display: flex; align-items: center; gap: 14px; }
+  .bola { flex: none; width: 34px; height: 34px; border: 2px solid var(--tria-marinho); border-radius: 50%; display: grid; place-items: center; font-family: var(--f-texto); font-weight: 700; font-size: 0.9375rem; }
+  .q-rodape { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--tria-linha); font-size: 0.875rem; color: var(--tria-texto-2); }
+
+  /* base à vista */
+  .base-grid { margin-top: 36px; display: grid; gap: clamp(24px, 4vw, 48px); grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 820px) { .base-grid { grid-template-columns: 0.8fr 1.2fr; } }
+  .estados { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+  .estados p { margin-top: 8px; }
+  .selos { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .selo { display: inline-block; font-family: var(--f-texto); font-size: 0.9375rem; font-weight: 700; padding: 3px 10px; border: 1.5px solid currentColor; background: #fff; }
+  .selo-ok { color: var(--tria-verificado); }
+  .selo-pend { color: var(--tria-pendente); }
+  .selo-fonte { color: var(--tria-fonte); }
+  .resolucao { background: #fff; border: 1px solid var(--tria-linha); padding: clamp(20px, 3vw, 32px); display: grid; gap: 18px; }
+  .resolucao .meta { margin: 0; }
+  .res-corpo { display: grid; gap: 12px; font-family: var(--f-questao); font-size: 1.0625rem; }
+  .res-sub { font-family: var(--f-texto); font-weight: 700; font-size: 0.9375rem; margin-top: 6px; }
+  .conta { font-size: 1.1875rem; overflow-x: auto; overflow-y: hidden; padding-block: 2px; }
+  .porques { margin: 0; padding-left: 1.2em; color: var(--tria-texto-2); display: grid; gap: 4px; }
+
+  /* passos e cards */
+  .passos { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .passos li { background: #fff; border: 1px solid var(--tria-linha); padding: 24px; }
+  .passo-n { font-family: var(--f-marca); font-weight: 800; font-size: 2rem; color: var(--tria-azul); display: block; margin-bottom: 8px; }
+  .passos h3 { margin-bottom: 8px; }
+  .cards { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .cards li { background: var(--tria-nevoa); padding: 24px; border-top: 4px solid var(--tria-azul); }
+  .cards h3 { margin-bottom: 8px; }
+
+  /* convite e dúvidas */
+  .convite { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; font-weight: 700; font-size: 1.1875rem; }
+  .faq { margin-top: 32px; max-width: 760px; border-top: 1px solid var(--tria-linha); }
+  .faq details { border-bottom: 1px solid var(--tria-linha); background: transparent; }
+  .faq summary { cursor: pointer; font-weight: 700; font-size: 1.125rem; padding: 18px 0; }
+  .faq details p { padding: 0 0 20px; max-width: 640px; }
+
+  /* lista de espera */
+  .lista { background: var(--tria-marinho); color: #fff; padding-block: clamp(56px, 9vw, 96px); }
+  .lista-in > * { max-width: 720px; }
+  .lista h2 { margin: 6px 0 16px; }
+  .lista .lead { color: #E6EBF5; margin-bottom: 28px; }
+
+  /* rodapé */
+  .rodape { background: var(--tria-papel); border-top: 1px solid var(--tria-linha); padding-block: 40px; }
+  .rodape-in { display: grid; gap: 16px; }
+  .frase { font-family: var(--f-marca); font-weight: 800; font-size: 1.0625rem; }
+  .mini { font-size: 0.875rem; color: var(--tria-texto-2); max-width: 680px; }
+  .rodape-in::after { content: ''; display: block; height: 4px; width: 96px; background: var(--tria-vermelho); }
+</style>
