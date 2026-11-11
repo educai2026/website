@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE, SITE_DESC } from '../config';
+import { SITE_TITLE, SITE_DESC, MOCKUP } from '../config';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -20,23 +20,27 @@ const og = new URL(`${base}/brand/instagram-post-manifesto-1080.png`, Astro.site
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{SITE_TITLE}</title>
+    <title>{MOCKUP ? 'Site da trIA' : SITE_TITLE}</title>
     <meta name="description" content={SITE_DESC} />
     <meta name="theme-color" content="#13254A" />
-    <link rel="canonical" href={canonical} />
-    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
-    <link rel="icon" href={`${base}/favicon-32.png`} sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href={`${base}/apple-touch-icon-180.png`} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:title" content={SITE_TITLE} />
-    <meta property="og:description" content={SITE_DESC} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={og} />
-    <link rel="manifest" href={`${base}/manifest.webmanifest`} />
-    <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
-    <script type="application/ld+json" set:html={ld} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {!MOCKUP && (
+      <Fragment>
+        <link rel="canonical" href={canonical} />
+        <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+        <link rel="icon" href={`${base}/favicon-32.png`} sizes="32x32" type="image/png" />
+        <link rel="apple-touch-icon" href={`${base}/apple-touch-icon-180.png`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:title" content={SITE_TITLE} />
+        <meta property="og:description" content={SITE_DESC} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={og} />
+        <link rel="manifest" href={`${base}/manifest.webmanifest`} />
+        <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
+        <script type="application/ld+json" set:html={ld} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Fragment>
+    )}
   </head>
   <body>
     <a class="skip" href="#conteudo">Ir para o conteúdo</a>

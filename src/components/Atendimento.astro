@@ -1,0 +1,34 @@
+---
+// Atendimento com roteiro fixo. Não chama API de IA nem guarda o que a pessoa responde.
+import { icone } from '../lib/icones';
+import iconeMarca from '../../trIA-identidade-visual/03-icones/trIA-icone-quadrado.svg?raw';
+import '../styles/chat.css';
+---
+
+<button type="button" class="at-botao" data-abrir-atendimento aria-haspopup="dialog" aria-controls="atendimento">
+  <Fragment set:html={icone('conversa', 20)} />
+  <span>Atendimento</span>
+</button>
+
+<section class="at" id="atendimento" role="dialog" aria-modal="false" aria-labelledby="at-nome" hidden>
+  <div class="at-cab">
+    <span class="at-avatar" aria-hidden="true"><Fragment set:html={iconeMarca} /></span>
+    <div>
+      <h2 class="at-nome" id="at-nome">Atendimento trIA</h2>
+      <p class="at-sub">Respostas automáticas</p>
+    </div>
+    <button type="button" class="at-fechar" data-fechar-atendimento aria-label="Fechar atendimento">
+      <Fragment set:html={icone('fechar', 20)} />
+    </button>
+  </div>
+  <div class="at-log" role="log" aria-live="polite" aria-label="Conversa" tabindex="0"></div>
+  <form class="at-form" novalidate>
+    <label class="sr" for="at-texto">Escreva sua dúvida</label>
+    <input id="at-texto" type="text" placeholder="Escreva sua dúvida" maxlength="200" autocomplete="off" enterkeyhint="send" />
+    <button type="submit" aria-label="Enviar"><Fragment set:html={icone('enviar', 20)} /></button>
+  </form>
+</section>
+
+<script>
+  import '../scripts/atendimento.ts';
+</script>
