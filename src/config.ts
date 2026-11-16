@@ -4,3 +4,6 @@ export const FORM_URL =
 export const SITE_TITLE = 'trIA · Questões e simulados no padrão ENEM, criados com o professor';
 export const SITE_DESC =
   'A trIA apoia professores a criar questões e simulados no padrão ENEM, com fontes, gabaritos e resoluções à vista. Você revisa, ajusta e assina.';
+
+// Build do mockup (página única para compartilhar): PUBLIC_MOCKUP=1 npm run build
+export const MOCKUP = import.meta.env.PUBLIC_MOCKUP === '1';

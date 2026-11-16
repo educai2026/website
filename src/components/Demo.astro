@@ -1,0 +1,256 @@
+---
+// Demonstração: questões predefinidas, renderizadas no build. O script só filtra, abre,
+// edita e monta o simulado no navegador. Nada é enviado nem salvo.
+import { questoes, AREAS, NIVEIS, LETRAS } from '../data/questoes';
+import { rico } from '../lib/formula';
+import { icone } from '../lib/icones';
+import { MOCKUP } from '../config';
+import logoPreto from '../../trIA-identidade-visual/02-logo/svg/trIA-principal-preto.svg?raw';
+import 'katex/dist/katex.min.css';
+import '../styles/demo.css';
+
+const total = questoes.length;
+---
+
+<div class="demo" data-demo data-vista="lista">
+  <div class="demo-vistas">
+    <button type="button" class="demo-vista" data-vista="lista" aria-pressed="true">Questões</button>
+    <button type="button" class="demo-vista" data-vista="simulado" aria-pressed="false">Seu simulado (<span data-conta-curta>0</span>)</button>
+  </div>
+
+  <div class="demo-barra">
+    <div class="filtro" role="group" aria-label="Filtrar por área">
+      <span class="filtro-nome" aria-hidden="true">Área</span>
+      <div class="chips">
+        <button type="button" class="chip" data-grupo="area" data-valor="todas" aria-pressed="true">Todas</button>
+        {Object.entries(AREAS).map(([valor, nome]) => (
+          <button type="button" class="chip" data-grupo="area" data-valor={valor} aria-pressed="false">{nome}</button>
+        ))}
+      </div>
+    </div>
+    <div class="filtro" role="group" aria-label="Filtrar por nível">
+      <span class="filtro-nome" aria-hidden="true">Nível</span>
+      <div class="chips">
+        <button type="button" class="chip" data-grupo="nivel" data-valor="todos" aria-pressed="true">Todos</button>
+        {Object.entries(NIVEIS).map(([valor, nome]) => (
+          <button type="button" class="chip" data-grupo="nivel" data-valor={valor} aria-pressed="false">{nome}</button>
+        ))}
+      </div>
+    </div>
+    <p class="demo-conta" aria-live="polite">{total} questões</p>
+  </div>
+
+  <div class="demo-corpo">
+    <div class="demo-lista">
+      <p class="demo-aviso">
+        <Fragment set:html={icone('pendente', 16)} />
+        <span>Exemplo de interface: os estados (verificado, pendente, fonte citada) e as taxas de similaridade desta demonstração são ilustrativos.</span>
+      </p>
+      <ul class="dq-lista">
+        {questoes.map((q, i) => {
+          const ok = q.estado === 'verificado';
+          const letra = LETRAS[q.gabarito];
+          return (
+            <li
+              class:list={['dq', { aberta: i === 0 }]}
+              data-id={q.id}
+              data-area={q.area}
+              data-nivel={q.nivel}
+              data-gabarito={letra}
+              data-rotulo={q.assunto}
+              data-detalhe={`${q.disciplina} · ${q.hab} · ${NIVEIS[q.nivel]}`}
+            >
+              <div class="dq-topo">
+                <h3 class="dq-meta">{q.disciplina} · {q.assunto}</h3>
+                <ul class="dq-tags" aria-label="Habilidade e nível">
+                  <li title={q.habTexto}>{q.hab}</li>
+                  <li>{NIVEIS[q.nivel]}</li>
+                </ul>
+              </div>
+
+              <div class="dq-texto">
+                <div class="dq-enun">
+                  {q.enunciado.map((p) => <p data-editavel set:html={rico(p)} />)}
+                </div>
+                <div class="dq-resto" id={`resto-${q.id}`}>
+                  {q.tabela && (
+                    <table class="dq-tabela">
+                      <thead>
+                        <tr>{q.tabela.cabecalho.map((c) => <th scope="col">{c}</th>)}</tr>
+                      </thead>
+                      <tbody>
+                        {q.tabela.linhas.map((linha) => <tr>{linha.map((c) => <td>{c}</td>)}</tr>)}
+                      </tbody>
+                    </table>
+                  )}
+                  <p class="dq-comando" data-editavel set:html={rico(q.comando)} />
+                  <ol class="dq-alts">
+                    {q.alternativas.map((a, j) => (
+                      <li class:list={{ certa: j === q.gabarito }}>
+                        <span class="bola" aria-hidden="true">{LETRAS[j]}</span>
+                        <span class="sr">Alternativa {LETRAS[j]}:</span>
+                        <span class="dq-alt" data-editavel set:html={rico(a)} />
+                        {j === q.gabarito && <span class="dq-gab-marca">gabarito</span>}
+                      </li>
+                    ))}
+                  </ol>
+                  <p class="dq-editar">
+                    <button type="button" class="bt-texto" data-acao="editar">
+                      <Fragment set:html={icone('lapis', 16)} />
+                      <span>Editar texto</span>
+                    </button>
+                    <span class="dq-dica" hidden>Clique no enunciado ou em uma alternativa e escreva.</span>
+                  </p>
+
+                  <div class="dq-base">
+                    <div class="dq-base-col">
+                      <div>
+                        <h4>Gabarito</h4>
+                        <p class="dq-gab">
+                          <strong>{letra}</strong>
+                          <span data-estado class:list={['selo', ok ? 'selo-ok' : 'selo-pend']}>
+                            <Fragment set:html={icone(ok ? 'verificado' : 'pendente', 16)} />
+                            <span>{ok ? 'Verificado' : 'Pendente: aguarda a sua revisão'}</span>
+                          </span>
+                        </p>
+                        <p class="dq-aviso" hidden>Você editou o texto. Confira o gabarito antes de usar.</p>
+                      </div>
+                      <div>
+                        <h4>Resolução</h4>
+                        <ol class="dq-passos">
+                          {q.resolucao.map((passo) => <li set:html={rico(passo)} />)}
+                        </ol>
+                      </div>
+                      <div>
+                        <h4>Por que as outras não servem</h4>
+                        <ul class="dq-porques">
+                          {Object.entries(q.distratores).map(([l, texto]) => (
+                            <li><strong>{l}.</strong> <span set:html={rico(texto)} /></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="dq-base-col">
+                      <div>
+                        <h4>Fonte</h4>
+                        <p class="selo selo-fonte">
+                          <Fragment set:html={icone('fonte', 16)} />
+                          <span>Fonte citada</span>
+                        </p>
+                        <p class="dq-fonte">
+                          Matriz de Referência do ENEM (Inep), {AREAS[q.area]}, {q.hab}: {q.habTexto}
+                        </p>
+                      </div>
+                      <div>
+                        <h4>Similaridade com itens do ENEM</h4>
+                        <p class="sim sim-g">
+                          <strong>{q.similaridade}%</strong>
+                          <span class="sim-barra" aria-hidden="true"><i style={`width:${q.similaridade}%`}></i></span>
+                        </p>
+                        <p class="dq-nota">Compara estrutura e habilidade com itens do exame. Valor ilustrativo nesta demonstração.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dq-pe">
+                <div class="dq-sinais">
+                  <span data-estado class:list={['selo', ok ? 'selo-ok' : 'selo-pend']}>
+                    <Fragment set:html={icone(ok ? 'verificado' : 'pendente', 16)} />
+                    <span>{ok ? 'Verificado' : 'Pendente'}</span>
+                  </span>
+                  <span class="selo selo-fonte">
+                    <Fragment set:html={icone('fonte', 16)} />
+                    <span>Fonte citada</span>
+                  </span>
+                  <span class="sim">
+                    <span class="sim-barra" aria-hidden="true"><i style={`width:${q.similaridade}%`}></i></span>
+                    <span>{q.similaridade}% de similaridade</span>
+                  </span>
+                </div>
+                <div class="dq-acoes">
+                  <button type="button" class="bt-texto" data-acao="abrir" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`resto-${q.id}`}>
+                    <span>{i === 0 ? 'Recolher' : 'Ver questão'}</span>
+                    <Fragment set:html={icone('abrir', 16)} />
+                  </button>
+                  <button type="button" class="btn btn-contorno btn-p" data-acao="adicionar" aria-pressed="false">
+                    <Fragment set:html={icone('mais', 16)} />
+                    <span>Adicionar</span>
+                  </button>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <div class="demo-nada" hidden>
+        <p>Nenhuma questão de exemplo com esse filtro.</p>
+        <button type="button" class="bt-texto" data-acao="limpar">Limpar filtros</button>
+      </div>
+    </div>
+
+    <aside class="sm" aria-labelledby="sm-t">
+      <div class="sm-in">
+        <div class="sm-cab">
+          <h3 id="sm-t">Seu simulado</h3>
+          <span class="sm-conta" aria-live="polite">0 questões</span>
+        </div>
+        <div class="sm-campos">
+          <label for="sm-titulo">Título</label>
+          <input id="sm-titulo" type="text" value="Simulado 1" maxlength="48" autocomplete="off" />
+          <label for="sm-prof">Professor(a)</label>
+          <input id="sm-prof" type="text" placeholder="Seu nome" maxlength="48" autocomplete="off" />
+        </div>
+        <p class="sm-vazio">Nenhuma questão ainda. Use “Adicionar” na lista para começar.</p>
+        <ol class="sm-lista"></ol>
+        <button type="button" class="btn btn-solido sm-ver" data-acao="folha" disabled>
+          <Fragment set:html={icone('folha', 18)} />
+          <span>Ver folha para impressão</span>
+        </button>
+        <p class="sm-nota">Folha A4 só em preto, pensada para a copiadora da escola.</p>
+      </div>
+    </aside>
+  </div>
+
+  <dialog class="fl" aria-labelledby="fl-t">
+    <div class="fl-barra">
+      <h3 id="fl-t">Folha do simulado</h3>
+      <label class="fl-check" for="fl-gab"><input type="checkbox" id="fl-gab" /> Gabarito em página separada</label>
+      {MOCKUP
+        ? <span class="fl-nota">A impressão funciona no site publicado.</span>
+        : (
+          <button type="button" class="btn btn-solido btn-p" data-acao="imprimir">
+            <Fragment set:html={icone('imprimir', 16)} />
+            <span>Imprimir</span>
+          </button>
+        )}
+      <button type="button" class="btn btn-contorno btn-p" data-acao="fechar-folha">Fechar</button>
+    </div>
+    <div class="fl-corpo"></div>
+  </dialog>
+
+  <template id="folha-modelo">
+    <div class="folha">
+      <div class="folha-cab">
+        <Fragment set:html={logoPreto} />
+        <div class="folha-tit">
+          <strong data-f="titulo"></strong>
+          <span data-f="sub"></span>
+        </div>
+      </div>
+      <p class="folha-campos">
+        <span class="longo">Nome: <i></i></span>
+        <span>Turma: <i></i></span>
+        <span>Data: <i></i></span>
+      </p>
+      <div class="folha-qs"></div>
+      <p class="folha-gab" hidden></p>
+      <p class="folha-pe">Material criado pelo professor com apoio da trIA</p>
+    </div>
+  </template>
+</div>
+
+<script>
+  import '../scripts/demo.ts';
+</script>
