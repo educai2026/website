@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Demo from '../components/Demo.astro';
 import Atendimento from '../components/Atendimento.astro';
-import { FORM_URL, MOCKUP } from '../config';
+import { FORM_URL, MOCKUP, PRIVACIDADE } from '../config';
+import { equipe } from '../data/equipe';
 import { duvidas } from '../data/atendimento';
 import { questoes } from '../data/questoes';
 import { icone } from '../lib/icones';
@@ -133,6 +134,26 @@ const logoRotulosAcessivel = logoRotulos
       </div>
     </section>
 
+    {equipe.length > 0 && (
+      <section class="sec" id="quem-somos" aria-labelledby="quem-t">
+        <div class="wrap duas">
+          <div class="duas-lado">
+            <h2 id="quem-t">Quem está por trás</h2>
+            <p>Pessoas reais, com nome e papel.</p>
+          </div>
+          <ul class="equipe">
+            {equipe.map((p) => (
+              <li>
+                <strong>{p.nome}</strong>
+                <span>{p.papel}</span>
+                <p>{p.texto}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
     <section class="sec" id="duvidas" aria-labelledby="duvidas-t">
       <div class="wrap duas">
         <div class="duas-lado">
@@ -170,7 +191,10 @@ const logoRotulosAcessivel = logoRotulos
     <div class="wrap rodape-in">
       <Fragment set:html={logo} />
       <p class="rodape-frase">Inteligência para criar. Clareza para ensinar. Autonomia para transformar.</p>
-      <p class="rodape-mini">© {ano} trIA. ENEM é um exame do INEP; a trIA não é afiliada ao INEP.</p>
+      <p class="rodape-mini">
+        © {ano} trIA. ENEM é um exame do INEP; a trIA não é afiliada ao INEP.
+        {PRIVACIDADE.email && !MOCKUP && <Fragment> <a href={`${base}/privacidade`}>Privacidade</a>.</Fragment>}
+      </p>
       <span class="linha-vermelha" aria-hidden="true"></span>
     </div>
   </footer>

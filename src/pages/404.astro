@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/pagina.css';
+import logo from '../../trIA-identidade-visual/02-logo/svg/trIA-principal-positivo.svg?raw';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base>
+  <header class="topo">
+    <div class="wrap topo-in">
+      <a class="topo-logo" href={`${base}/`} aria-label="trIA, início"><Fragment set:html={logo} /></a>
+    </div>
+  </header>
+  <main id="conteudo">
+    <section class="hero">
+      <div class="wrap">
+        <span class="linha-azul" aria-hidden="true"></span>
+        <h1>Esta página não existe.</h1>
+        <div class="hero-base">
+          <p class="hero-sub">O endereço pode ter mudado ou estar escrito errado. A página inicial tem a demonstração e a lista de espera.</p>
+          <div class="acoes">
+            <a class="btn btn-solido" href={`${base}/`}>Ir para o início</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
