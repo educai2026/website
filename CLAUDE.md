@@ -15,7 +15,7 @@ A identidade completa está em `trIA-identidade-visual/` (fonte da verdade; não
 - `src/components/Atendimento.astro` + `src/scripts/atendimento.ts` + `src/data/atendimento.ts`: atendimento e dúvidas.
 - `src/config.ts`: link do formulário da lista de espera (`FORM_URL`).
 - `src/config.ts` também tem `PRIVACIDADE` (responsável e e-mail: liga o link "Privacidade" no rodapé) e `GOATCOUNTER` (contador de visitas sem cookies). Vazios = não aparecem.
-- `src/data/equipe.ts`: pessoas da seção "Quem está por trás". Lista vazia = a seção não aparece.
+- `src/data/equipe.ts`: pessoas listadas dentro de "Quem somos". Lista vazia = só o texto da empresa e do projeto. Só publicar nome de quem autorizou.
 - `src/pages/404.astro` e `src/pages/privacidade.astro`. Prévia de link: `public/brand/og-1200x630.png`.
 - Logos: importados direto de `trIA-identidade-visual/` com `?raw` (SVG inline), sem cópias.
 

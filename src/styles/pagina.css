@@ -70,7 +70,7 @@
 .nome-texto p { max-width: 34em; }
 
 /* quem somos */
-.equipe { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px 40px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.equipe { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 24px 40px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .equipe li { border-top: 2px solid var(--tria-marinho); padding-top: 14px; display: grid; gap: 4px; align-content: start; }
 .equipe strong { font-family: var(--f-marca); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.01em; }
 .equipe span { font-size: 0.9375rem; color: var(--tria-texto-2); }
