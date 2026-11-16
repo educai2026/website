@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/pagina.css';
+import { FORM_URL, PRIVACIDADE } from '../config';
+import logo from '../../trIA-identidade-visual/02-logo/svg/trIA-principal-positivo.svg?raw';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { responsavel, email } = PRIVACIDADE;
+---
+
+<Base>
+  <header class="topo">
+    <div class="wrap topo-in">
+      <a class="topo-logo" href={`${base}/`} aria-label="trIA, início"><Fragment set:html={logo} /></a>
+    </div>
+  </header>
+  <main id="conteudo" class="texto-legal">
+    <div class="wrap">
+      <span class="linha-azul" aria-hidden="true"></span>
+      <h1>Privacidade</h1>
+      <p class="lead">Como a trIA trata os dados de quem entra na lista de espera.</p>
+
+      <h2>O que este site coleta</h2>
+      <p>
+        Este site não usa cookies de publicidade nem cria conta. A demonstração roda no seu navegador: o que você
+        escolhe, edita ou escreve nela, e as perguntas que digita no atendimento, não são enviados nem guardados.
+      </p>
+
+      <h2>A lista de espera</h2>
+      <p>
+        Os dados só chegam até nós se você preencher o <a href={FORM_URL} target="_blank" rel="noopener">formulário da lista de espera</a>,
+        que é um Formulário Google. O que você informa ali é o que o formulário pede, e o Google também trata esses dados
+        conforme a política dele.
+      </p>
+
+      <h2>Para que usamos</h2>
+      <p>Para avisar você quando a trIA abrir, para convidar quem quiser testar e para entender quem tem interesse no projeto. Nada além disso.</p>
+
+      <h2>Seus direitos</h2>
+      <p>
+        Você pode pedir a qualquer momento acesso, correção ou exclusão dos seus dados, e sair da lista, conforme a
+        Lei Geral de Proteção de Dados (Lei 13.709/2018).
+      </p>
+
+      <h2>Contato</h2>
+      {email
+        ? <p>{responsavel ? <Fragment>Responsável: {responsavel}. </Fragment> : null}Escreva para <a href={`mailto:${email}`}>{email}</a>.</p>
+        : <p>O canal de contato será informado aqui antes do lançamento.</p>}
+      <p><a href={`${base}/`}>Voltar para o início</a></p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .texto-legal { padding-block: clamp(36px, 6vw, 80px); }
+  .texto-legal h1 { margin-top: 24px; }
+  .texto-legal h2 { font-size: 1.375rem; margin: 36px 0 10px; }
+  .texto-legal p, .texto-legal .lead { max-width: 40em; margin-top: 10px; }
+  .texto-legal .lead { font-size: 1.1875rem; color: var(--tria-texto-2); }
+</style>
