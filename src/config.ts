@@ -7,7 +7,7 @@ export const SITE_DESC =
 
 // Opcionais. Enquanto estiverem vazios, o que dependem deles não aparece no site.
 // Contato e responsável pelos dados da lista de espera (aparecem na página /privacidade e no rodapé).
-export const PRIVACIDADE = { responsavel: '', email: '' };
+export const PRIVACIDADE = { responsavel: 'higgs.ai', email: 'thiago.mateustech@gmail.com' };
 // Código do GoatCounter (contador de visitas sem cookies). Ex.: 'tria' para tria.goatcounter.com.
 export const GOATCOUNTER = '';
 

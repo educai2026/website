@@ -41,6 +41,7 @@ const logoRotulosAcessivel = logoRotulos
       <nav class="topo-nav" aria-label="Seções">
         <a href="#demo">Demonstração</a>
         <a href="#como">Como funciona</a>
+        <a href="#quem-somos">Quem somos</a>
         <a href="#duvidas">Dúvidas</a>
       </nav>
       <a class="btn btn-solido btn-p" href={FORM_URL} target="_blank" rel="noopener">
@@ -134,25 +135,51 @@ const logoRotulosAcessivel = logoRotulos
       </div>
     </section>
 
-    {equipe.length > 0 && (
-      <section class="sec" id="quem-somos" aria-labelledby="quem-t">
-        <div class="wrap duas">
-          <div class="duas-lado">
-            <h2 id="quem-t">Quem está por trás</h2>
-            <p>Pessoas reais, com nome e papel.</p>
-          </div>
-          <ul class="equipe">
-            {equipe.map((p) => (
-              <li>
-                <strong>{p.nome}</strong>
-                <span>{p.papel}</span>
-                <p>{p.texto}</p>
-              </li>
-            ))}
-          </ul>
+    <section class="sec" id="quem-somos" aria-labelledby="quem-t">
+      <div class="wrap duas">
+        <div class="duas-lado">
+          <h2 id="quem-t">Quem somos</h2>
+          <p>A trIA é um projeto da higgs.ai, feito para quem ensina.</p>
         </div>
-      </section>
-    )}
+        <div>
+          <dl class="compromissos">
+            <div>
+              <dt>Quem faz</dt>
+              <dd>A higgs.ai, empresa de tecnologia que desenvolve a trIA.</dd>
+            </div>
+            <div>
+              <dt>O que é</dt>
+              <dd>Uma plataforma de questões e simulados no padrão ENEM, criados com o professor.</dd>
+            </div>
+            <div>
+              <dt>Por onde começamos</dt>
+              <dd>Matemática e Ciências da Natureza. O projeto está em desenvolvimento, e a demonstração desta página mostra o caminho que o professor vai percorrer.</dd>
+            </div>
+            <div>
+              <dt>Como trabalhamos</dt>
+              <dd>O professor decide. A trIA sugere, mostra de onde tirou e diz o que ainda não foi verificado.</dd>
+            </div>
+            {PRIVACIDADE.email && (
+              <div>
+                <dt>Fale com a gente</dt>
+                <dd><a href={`mailto:${PRIVACIDADE.email}`}>{PRIVACIDADE.email}</a></dd>
+              </div>
+            )}
+          </dl>
+          {equipe.length > 0 && (
+            <ul class="equipe">
+              {equipe.map((p) => (
+                <li>
+                  <strong>{p.nome}</strong>
+                  <span>{p.papel}</span>
+                  <p>{p.texto}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </section>
 
     <section class="sec" id="duvidas" aria-labelledby="duvidas-t">
       <div class="wrap duas">
