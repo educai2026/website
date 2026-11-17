@@ -15,12 +15,23 @@
 .filtro-nome { font-size: 0.8125rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--tria-texto-2); }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip {
-  min-height: 38px; padding: 0 14px; border: 1.5px solid var(--tria-linha); background: #fff; border-radius: 999px;
+  min-height: 40px; padding: 0 14px; white-space: nowrap; flex: none; border: 1.5px solid var(--tria-linha); background: #fff; border-radius: 999px;
   font-size: 0.9375rem; font-weight: 700; transition: background-color .15s, border-color .15s, color .15s;
 }
 .chip:hover { border-color: var(--tria-marinho); }
 .chip[aria-pressed='true'] { background: var(--tria-marinho); border-color: var(--tria-marinho); color: #fff; }
 .demo-conta { margin-left: auto; font-size: 0.9375rem; color: var(--tria-texto-2); font-variant-numeric: tabular-nums; }
+
+/* mobile: cada filtro vira uma linha só, com rolagem lateral nos botões */
+@media (max-width: 979px) {
+  .demo-barra { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 8px 0 6px; }
+  .filtro { flex-wrap: nowrap; gap: 8px; padding-left: 14px; }
+  .filtro-nome { flex: none; width: 3.1em; font-size: 0.75rem; }
+  .chips { min-width: 0; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding: 2px 14px 2px 0; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { scroll-snap-align: start; }
+  .demo-conta { margin: 0; padding: 0 14px; font-size: 0.875rem; }
+}
 
 /* alternância de vista (só em telas estreitas) */
 .demo-vistas { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--tria-linha); }
