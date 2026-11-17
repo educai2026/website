@@ -44,3 +44,22 @@ A identidade completa está em `trIA-identidade-visual/` (fonte da verdade; não
 
 ## Git
 - Commits, branches e PRs em minúsculas, curtos, no formato `feat: ...` / `fix: ...` (ex.: `feat/demo-interativa`).
+- Toda PR traz **"O que conferir"**: até 3 linhas que o Thiago valida sem ler código (um comando, uma tela para abrir).
+- **O merge na `main` publica o site** (deploy automático no GitHub Pages). Por isso o merge é sempre do Thiago.
+
+## Autonomia
+O Claude vai até a PR sozinho quando `npm run build` passa e a página foi aberta e conferida no navegador (`npm run preview`, em `/website/`), em: ajuste de visual dentro das regras da marca, correção de bug, texto dentro do tom de voz, refatoração sem mudança visível, documentação.
+
+**Lista de parada — a única.** Nestes casos abre a PR e **não pede o merge**, esperando o Thiago:
+- publicar nome ou foto de pessoa em `src/data/equipe.ts` sem autorização dela registrada;
+- depoimento, número, preço, selo ou qualquer afirmação que não tenha sido verificada (a regra da marca vale: dizer como pendente);
+- alterar `FORM_URL`, `PRIVACIDADE` ou `GOATCOUNTER` em `src/config.ts`, ou qualquer coisa que colete dado de visitante;
+- editar arquivos oficiais de `trIA-identidade-visual/` ou fugir das regras da marca;
+- mexer em `.github/workflows/deploy.yml` ou na forma de publicar;
+- questão nova ou alterada na demonstração sem revisão de professor (ela entra como "pendente").
+
+**Fora da lista, não pare para perguntar.** Escolha a opção mais reversível, registre a suposição na PR e siga até o fim da tarefa.
+
+**Dentro da lista, parar o merge não é parar a sessão.** Abra a PR com a pendência descrita e siga com o que não depende dela.
+
+**Formato de resposta:** (1) o que mudou, 1–3 linhas · (2) link da PR · (3) como foi conferido (build + página aberta) · (4) o que precisa do Thiago, só se existir. Português, direto.
